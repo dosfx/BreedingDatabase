@@ -17,24 +17,26 @@
         {
             this.components = new System.ComponentModel.Container();
             this.breedingGridView = new System.Windows.Forms.DataGridView();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.newBatchButton = new System.Windows.Forms.ToolStripButton();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isMutantColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isHybridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.newBatchButton = new System.Windows.Forms.ToolStripButton();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.createBatchButton = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // breedingGridView
             // 
             this.breedingGridView.AllowUserToAddRows = false;
             this.breedingGridView.AllowUserToDeleteRows = false;
+            this.breedingGridView.AllowUserToResizeRows = false;
             this.breedingGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -51,11 +53,32 @@
             this.breedingGridView.Name = "breedingGridView";
             this.breedingGridView.ReadOnly = true;
             this.breedingGridView.RowHeadersVisible = false;
+            this.breedingGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.breedingGridView.Size = new System.Drawing.Size(800, 422);
             this.breedingGridView.TabIndex = 0;
             this.breedingGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BreedingGridView_CellFormatting);
             this.breedingGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BreedingGridView_CellPainting);
-            this.breedingGridView.SelectionChanged += new System.EventHandler(this.BreedingGridView_SelectionChanged);
+            // 
+            // toolStrip
+            // 
+            this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newBatchButton,
+            this.createBatchButton});
+            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 3, 1, 0);
+            this.toolStrip.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip.TabIndex = 1;
+            this.toolStrip.Text = "toolStrip1";
+            // 
+            // newBatchButton
+            // 
+            this.newBatchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.newBatchButton.Name = "newBatchButton";
+            this.newBatchButton.Size = new System.Drawing.Size(97, 19);
+            this.newBatchButton.Text = "Add Breedings...";
+            this.newBatchButton.Click += new System.EventHandler(this.NewBatchButton_Click);
             // 
             // batchColumn
             // 
@@ -102,26 +125,12 @@
             // 
             this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
             // 
-            // toolStrip
+            // createBatchButton
             // 
-            this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newBatchButton});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 3, 1, 0);
-            this.toolStrip.Size = new System.Drawing.Size(800, 25);
-            this.toolStrip.TabIndex = 1;
-            this.toolStrip.Text = "toolStrip1";
-            // 
-            // newBatchButton
-            // 
-            this.newBatchButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.newBatchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.newBatchButton.Name = "newBatchButton";
-            this.newBatchButton.Size = new System.Drawing.Size(77, 19);
-            this.newBatchButton.Text = "New Batch...";
-            this.newBatchButton.Click += new System.EventHandler(this.NewBatchButton_Click);
+            this.createBatchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.createBatchButton.Name = "createBatchButton";
+            this.createBatchButton.Size = new System.Drawing.Size(78, 19);
+            this.createBatchButton.Text = "Create Batch";
             // 
             // MainForm
             // 
@@ -133,9 +142,9 @@
             this.Name = "MainForm";
             this.Text = "Breeding Database";
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -153,6 +162,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn isRareColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isHybridColumn;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.ToolStripButton createBatchButton;
     }
 }
 

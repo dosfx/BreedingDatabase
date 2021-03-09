@@ -30,7 +30,7 @@ namespace BreedingDatabase
         {
             base.OnLoad(e);
 
-            breedingBindingSource.DataSource = breedings.Query().ToList();
+            FillGrid();
         }
 
         /// <summary>
@@ -51,25 +51,53 @@ namespace BreedingDatabase
             }
         }
 
+        private void FillGrid()
+        {
+            breedingBindingSource.DataSource = Enumerable.Concat(
+                breedings.Query().Where(b => b.Batch == null).ToEnumerable(), 
+                breedings.Query().Where(b => b.Batch != null).ToEnumerable());
+        }
+
         private void NewBatchButton_Click(object sender, EventArgs e)
         {
             using (NewBatchForm dialog = new NewBatchForm())
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    Batch batch = new Batch();
-                    batches.Insert(batch);
-                    IList<Breeding> newBreedings = dialog.Breedings;
-                    foreach (Breeding breeding in newBreedings)
+                    try 
                     {
-                        breeding.Batch = batch;
+                        database.BeginTrans();
+                        IList<Breeding> newBreedings = dialog.Breedings;
+                        foreach (Breeding breeding in newBreedings)
+                        {
+                            if (breedings.FindById(breeding.Id) == null)
+                            {
+                                breedings.Insert(breeding);
+                            }
+                        }
+
+                        database.Commit();
+                        database.Checkpoint();
+                    }
+                    catch (Exception ex)
+                    {
+                        database.Rollback();
+                        HandleException(ex);
                     }
 
-                    breedings.Insert(newBreedings);
-
-                    breedingBindingSource.DataSource = breedings.Query().ToList();
+                    FillGrid();
                 }
             }
+        }
+
+        private void HandleException(Exception e)
+        {
+            System.IO.File.WriteAllText("Error.Log", e.ToString());
+            MessageBox.Show(
+                "An exception occured while interacting with the database, no changes were made to protect the data. Give Dos the Error.Log file created in the program directory.",
+                "Database Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
 
         private Breeding GetBreedingFromGrid(int index)
@@ -85,7 +113,7 @@ namespace BreedingDatabase
             if (index <= 0 || index >= breedingBindingSource.Count) return false;
 
             // check the row above
-            return GetBreedingFromGrid(index).Batch.Id.Equals(GetBreedingFromGrid(index - 1).Batch.Id);
+            return GetBreedingFromGrid(index)?.Batch?.Id.Equals(GetBreedingFromGrid(index - 1)?.Batch?.Id) ?? false;
         }
 
         private void BreedingGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -126,13 +154,23 @@ namespace BreedingDatabase
             }
             else if (e.ColumnIndex == batchColumn.Index)
             {
-                e.Value = IsRepeatedBatchRow(e.RowIndex) ? string.Empty : breeding.Batch.BatchDate.ToString("D");
-                breedingGridView[e.ColumnIndex, e.RowIndex].ToolTipText = breeding.Batch.BatchDate.ToString("F");
+                if (breeding.Batch == null)
+                {
+                    e.Value = "-";
+                }
+                else
+                {
+                    e.Value = IsRepeatedBatchRow(e.RowIndex) ? string.Empty : breeding.Batch.BatchDate.ToString("D");
+                    breedingGridView[e.ColumnIndex, e.RowIndex].ToolTipText = breeding.Batch.BatchDate.ToString("F");
+                }
             }
         }
 
         private void BreedingGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
+            // all cells and headers are centers all the time
+            e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             // get the breeding for this row or bail
             Breeding breeding = GetBreedingFromGrid(e.RowIndex);
             if (breeding == null) return;
@@ -145,16 +183,11 @@ namespace BreedingDatabase
                     e.AdvancedBorderStyle.Top = DataGridViewAdvancedCellBorderStyle.None;
                 }
                 if (e.RowIndex + 1 < breedingBindingSource.Count && 
-                    breeding.Batch.Id.Equals(((Breeding)breedingBindingSource[e.RowIndex + 1]).Batch.Id))
+                    (breeding.Batch?.Id.Equals((breedingBindingSource[e.RowIndex + 1] as Breeding)?.Batch?.Id) ?? false))
                 {
                     e.AdvancedBorderStyle.Bottom = DataGridViewAdvancedCellBorderStyle.None;
                 }
             }
-        }
-
-        private void BreedingGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            breedingGridView.ClearSelection();
         }
     }
 }
