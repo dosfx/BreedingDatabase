@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Batch.cs" />
     <Compile Include="Breeding.cs" />
+    <Compile Include="BreedingType.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

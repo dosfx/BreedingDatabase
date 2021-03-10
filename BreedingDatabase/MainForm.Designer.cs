@@ -17,19 +17,19 @@
         {
             this.components = new System.ComponentModel.Container();
             this.breedingGridView = new System.Windows.Forms.DataGridView();
+            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.newBatchButton = new System.Windows.Forms.ToolStripButton();
+            this.createBatchButton = new System.Windows.Forms.ToolStripButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isMutantColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.breedingTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isHybridColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.createBatchButton = new System.Windows.Forms.ToolStripButton();
+            this.Ordering = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).BeginInit();
-            this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
+            this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // breedingGridView
@@ -44,10 +44,10 @@
             this.breedingGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.breedingGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.batchColumn,
-            this.isMutantColumn,
+            this.breedingTypeColumn,
             this.idColumn,
             this.isRareColumn,
-            this.isHybridColumn});
+            this.Ordering});
             this.breedingGridView.DataSource = this.breedingBindingSource;
             this.breedingGridView.Location = new System.Drawing.Point(0, 28);
             this.breedingGridView.Name = "breedingGridView";
@@ -58,6 +58,11 @@
             this.breedingGridView.TabIndex = 0;
             this.breedingGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BreedingGridView_CellFormatting);
             this.breedingGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BreedingGridView_CellPainting);
+            this.breedingGridView.SelectionChanged += new System.EventHandler(this.BreedingGridView_SelectionChanged);
+            // 
+            // breedingBindingSource
+            // 
+            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
             // 
             // toolStrip
             // 
@@ -80,6 +85,14 @@
             this.newBatchButton.Text = "Add Breedings...";
             this.newBatchButton.Click += new System.EventHandler(this.NewBatchButton_Click);
             // 
+            // createBatchButton
+            // 
+            this.createBatchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.createBatchButton.Name = "createBatchButton";
+            this.createBatchButton.Size = new System.Drawing.Size(78, 19);
+            this.createBatchButton.Text = "Create Batch";
+            this.createBatchButton.Click += new System.EventHandler(this.CreateBatchButton_Click);
+            // 
             // batchColumn
             // 
             this.batchColumn.DataPropertyName = "Batch";
@@ -87,14 +100,12 @@
             this.batchColumn.Name = "batchColumn";
             this.batchColumn.ReadOnly = true;
             // 
-            // isMutantColumn
+            // breedingTypeColumn
             // 
-            this.isMutantColumn.DataPropertyName = "IsMutant";
-            this.isMutantColumn.HeaderText = "Type";
-            this.isMutantColumn.Name = "isMutantColumn";
-            this.isMutantColumn.ReadOnly = true;
-            this.isMutantColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isMutantColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.breedingTypeColumn.DataPropertyName = "BreedingType";
+            this.breedingTypeColumn.HeaderText = "Type";
+            this.breedingTypeColumn.Name = "breedingTypeColumn";
+            this.breedingTypeColumn.ReadOnly = true;
             // 
             // idColumn
             // 
@@ -112,25 +123,12 @@
             this.isRareColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.isRareColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // isHybridColumn
+            // Ordering
             // 
-            this.isHybridColumn.DataPropertyName = "IsHybrid";
-            this.isHybridColumn.HeaderText = "C/UC or H?";
-            this.isHybridColumn.Name = "isHybridColumn";
-            this.isHybridColumn.ReadOnly = true;
-            this.isHybridColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isHybridColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // breedingBindingSource
-            // 
-            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
-            // 
-            // createBatchButton
-            // 
-            this.createBatchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.createBatchButton.Name = "createBatchButton";
-            this.createBatchButton.Size = new System.Drawing.Size(78, 19);
-            this.createBatchButton.Text = "Create Batch";
+            this.Ordering.DataPropertyName = "Ordering";
+            this.Ordering.HeaderText = "Ordering";
+            this.Ordering.Name = "Ordering";
+            this.Ordering.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -142,9 +140,9 @@
             this.Name = "MainForm";
             this.Text = "Breeding Database";
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -156,13 +154,13 @@
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.BindingSource breedingBindingSource;
         private System.Windows.Forms.ToolStripButton newBatchButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn batchColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn isMutantColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn isRareColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn isHybridColumn;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStripButton createBatchButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn breedingTypeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn batchColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isRareColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Ordering;
     }
 }
 

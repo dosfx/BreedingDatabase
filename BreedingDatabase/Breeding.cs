@@ -9,10 +9,10 @@ namespace BreedingDatabase
 {
     public class Breeding
     {
-        public string Id { get; set; }
-        public bool IsMutant { get; set; }
+        public long Id { get; set; }
+        public BreedingType BreedingType { get; set; }
         public bool IsRare { get; set; }
-        public bool IsHybrid { get; set; }
+        public string Ordering { get; set; }
         [BsonRef]
         public Batch Batch { get; set; }
     }
