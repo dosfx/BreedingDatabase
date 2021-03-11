@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -56,8 +55,8 @@ namespace BreedingDatabase
         private void FillGrid()
         {
             breedingBindingSource.DataSource = Enumerable.Concat(
-                breedings.Query().Where(b => b.Batch == null).OrderBy(b => b.Id).ToEnumerable(), 
-                breedings.Query().Where(b => b.Batch != null).OrderBy(b => b.Ordering).ToEnumerable().OrderBy(b => b.Batch.BatchDate.Ticks));
+                breedings.Query().Where(b => b.Batch == null).OrderByDescending(b => b.Id).ToEnumerable(),
+                breedings.Query().Where(b => b.Batch != null).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering));
         }
 
         private void NewBatchButton_Click(object sender, EventArgs e)
@@ -192,7 +191,7 @@ namespace BreedingDatabase
                 foreach (Breeding breeding in batchBreedings)
                 {
                     // calc the hash to sort the breedings by
-                    breeding.Ordering = ToHexString(Hash(breeding));
+                    breeding.CalcOrdering();
                     breeding.BreedingType = BreedingType.Mutant;
                     breeding.Batch = batch;
                 }
@@ -204,15 +203,15 @@ namespace BreedingDatabase
                 for (int i = 4; i < batchBreedings.Count; i += 5)
                 {
                     Breeding special = batchBreedings[i];
-                    special.IsRare = Chance(special, 4, 1);
-                    special.BreedingType = i % 10 == 4 ? BreedingType.Hybrid : BreedingType.CommonUncommon;
+                    special.RollRare();
+                    special.SetTypeFromIndex(i);
                 }
 
                 // fix the 5 batch to roll type
                 if (batchBreedings.Count == 5)
                 {
                     Breeding special = batchBreedings[4];
-                    special.BreedingType = Chance(special, 2, 2) ? BreedingType.Hybrid : BreedingType.CommonUncommon;
+                    special.RollBreedingType();
                 }
 
                 breedings.Update(batchBreedings);
@@ -228,36 +227,6 @@ namespace BreedingDatabase
 
             // refresh
             FillGrid();
-        }
-
-        private byte[] Hash(Breeding breeding, int extraHashes = 0)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes(breeding.Id.ToString())));
-            using (SHA512 sha = SHA512.Create())
-            {
-                do
-                {
-                    bytes = sha.ComputeHash(bytes);
-                    extraHashes--;
-                } while (extraHashes >= 0);
-            }
-
-            return bytes;
-        }
-
-        private bool Chance(Breeding breeding, int odds, int index)
-        {
-            return Hash(breeding, index)[0] % odds == 0;
-        }
-
-        private string ToHexString(byte[] bytes)
-        {
-            StringBuilder builder = new StringBuilder(bytes.Length * 2);
-            foreach (byte b in bytes)
-            {
-                builder.AppendFormat("{0:x2}", b);
-            }
-            return builder.ToString();
         }
 
         private void BreedingGridView_SelectionChanged(object sender, EventArgs e)

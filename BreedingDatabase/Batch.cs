@@ -9,13 +9,17 @@ namespace BreedingDatabase
 {
     public class Batch
     {
-        public Guid Id { get; private set; }
-        public DateTime BatchDate { get; private set; }
+        [BsonId]
+        public Guid Id { get; set; }
+        public DateTime BatchDate { get; set; }
 
-        public Batch()
+        public Batch() : this(Guid.NewGuid(), DateTime.Now) { }
+
+        [BsonCtor]
+        public Batch(Guid id, DateTime batchDate)
         {
-            Id = Guid.NewGuid();
-            BatchDate = DateTime.Now;
+            Id = id;
+            BatchDate = batchDate;
         }
     }
 }
