@@ -65,19 +65,19 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewBatchForm.resx">
-      <DependentUpon>NewBatchForm.cs</DependentUpon>
+    <EmbeddedResource Include="AddBreedingsForm.resx">
+      <DependentUpon>AddBreedingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="NewBatchForm.cs">
+    <Compile Include="AddBreedingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewBatchForm.Designer.cs">
-      <DependentUpon>NewBatchForm.cs</DependentUpon>
+    <Compile Include="AddBreedingsForm.Designer.cs">
+      <DependentUpon>AddBreedingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -91,7 +91,7 @@ namespace BreedingDatabase
 
         private void AddBreedingsButton_Click(object sender, EventArgs e)
         {
-            using (NewBatchForm dialog = new NewBatchForm())
+            using (AddBreedingsForm dialog = new AddBreedingsForm())
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
