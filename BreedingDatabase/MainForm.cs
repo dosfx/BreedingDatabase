@@ -18,6 +18,35 @@ namespace BreedingDatabase
         private readonly ILiteCollection<Batch> batches;
         private readonly ILiteCollection<Breeding> breedings;
 
+        private bool IsCreateBatchEnabled
+        {
+            get
+            {
+                int selectedCount = breedingGridView.SelectedRows.Count;
+
+                // simple check, are there 5 10 or 20 selected rows
+                if (!(new int[] { 5, 10, 20 }).Contains(selectedCount)) return false;
+
+                // find the index of the last unbatched row
+                int index = 0;
+                for (; index < breedingGridView.RowCount; index++)
+                {
+                    if (GetBreedingFromGrid(index).Batch != null)
+                    {
+                        // first batched row, go up 1
+                        index--;
+                        break;
+                    }
+                }
+
+                // no unbatched rows in this case
+                if (index < 0) return false;
+
+                HashSet<int> requiredIndexes = new HashSet<int>(Enumerable.Range(index - selectedCount + 1, selectedCount));
+                return requiredIndexes.SetEquals(breedingGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => r.Index));
+            }
+        }
+
         public MainForm()
         {
             InitializeComponent();
@@ -25,6 +54,7 @@ namespace BreedingDatabase
             database = new LiteDatabase("breeding.db");
             batches = database.GetCollection<Batch>();
             breedings = database.GetCollection<Breeding>();
+            //database.Execute("select $ into $file('breeding.json') from Breeding");
         }
 
         protected override void OnLoad(EventArgs e)
@@ -59,7 +89,7 @@ namespace BreedingDatabase
                 breedings.Query().Where(b => b.Batch != null).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering));
         }
 
-        private void NewBatchButton_Click(object sender, EventArgs e)
+        private void AddBreedingsButton_Click(object sender, EventArgs e)
         {
             using (NewBatchForm dialog = new NewBatchForm())
             {
@@ -182,6 +212,12 @@ namespace BreedingDatabase
 
         private void CreateBatchButton_Click(object sender, EventArgs e)
         {
+            // sanity check
+            if (!IsCreateBatchEnabled) return;
+
+            // confirm with Alana
+            if (MessageBox.Show("Do you want to create a new batch with the selected breedings?", "Create Batch", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+
             try
             {
                 database.BeginTrans();
@@ -231,8 +267,7 @@ namespace BreedingDatabase
 
         private void BreedingGridView_SelectionChanged(object sender, EventArgs e)
         {
-            createBatchButton.Enabled = (new int[] { 5, 10, 20 }).Contains(breedingGridView.SelectedRows.Count) &&
-                breedingGridView.SelectedRows.Cast<DataGridViewRow>().All(r => GetBreedingFromGrid(r.Index).Batch == null);
+            createBatchButton.Enabled = IsCreateBatchEnabled;
         }
     }
 }
