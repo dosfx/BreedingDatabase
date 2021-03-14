@@ -17,19 +17,20 @@
         {
             this.components = new System.ComponentModel.Container();
             this.breedingGridView = new System.Windows.Forms.DataGridView();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.addBreedingsButton = new System.Windows.Forms.ToolStripButton();
+            this.createBatchButton = new System.Windows.Forms.ToolStripButton();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.breedingTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ordering = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.addBreedingsButton = new System.Windows.Forms.ToolStripButton();
-            this.createBatchButton = new System.Windows.Forms.ToolStripButton();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // breedingGridView
@@ -59,6 +60,46 @@
             this.breedingGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BreedingGridView_CellFormatting);
             this.breedingGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BreedingGridView_CellPainting);
             this.breedingGridView.SelectionChanged += new System.EventHandler(this.BreedingGridView_SelectionChanged);
+            // 
+            // toolStrip
+            // 
+            this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addBreedingsButton,
+            this.createBatchButton});
+            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 3, 1, 0);
+            this.toolStrip.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip.TabIndex = 1;
+            this.toolStrip.Text = "toolStrip1";
+            // 
+            // addBreedingsButton
+            // 
+            this.addBreedingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.addBreedingsButton.Name = "addBreedingsButton";
+            this.addBreedingsButton.Size = new System.Drawing.Size(97, 19);
+            this.addBreedingsButton.Text = "Add Breedings...";
+            this.addBreedingsButton.Click += new System.EventHandler(this.AddBreedingsButton_Click);
+            // 
+            // createBatchButton
+            // 
+            this.createBatchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.createBatchButton.Name = "createBatchButton";
+            this.createBatchButton.Size = new System.Drawing.Size(78, 19);
+            this.createBatchButton.Text = "Create Batch";
+            this.createBatchButton.Click += new System.EventHandler(this.CreateBatchButton_Click);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "BreedingType";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Type";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // breedingBindingSource
+            // 
+            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
             // 
             // batchColumn
             // 
@@ -97,39 +138,6 @@
             this.Ordering.Name = "Ordering";
             this.Ordering.ReadOnly = true;
             // 
-            // breedingBindingSource
-            // 
-            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
-            // 
-            // toolStrip
-            // 
-            this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addBreedingsButton,
-            this.createBatchButton});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 3, 1, 0);
-            this.toolStrip.Size = new System.Drawing.Size(800, 25);
-            this.toolStrip.TabIndex = 1;
-            this.toolStrip.Text = "toolStrip1";
-            // 
-            // addBreedingsButton
-            // 
-            this.addBreedingsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.addBreedingsButton.Name = "addBreedingsButton";
-            this.addBreedingsButton.Size = new System.Drawing.Size(97, 19);
-            this.addBreedingsButton.Text = "Add Breedings...";
-            this.addBreedingsButton.Click += new System.EventHandler(this.AddBreedingsButton_Click);
-            // 
-            // createBatchButton
-            // 
-            this.createBatchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.createBatchButton.Name = "createBatchButton";
-            this.createBatchButton.Size = new System.Drawing.Size(78, 19);
-            this.createBatchButton.Text = "Create Batch";
-            this.createBatchButton.Click += new System.EventHandler(this.CreateBatchButton_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -140,9 +148,9 @@
             this.Name = "MainForm";
             this.Text = "Breeding Database";
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -156,11 +164,12 @@
         private System.Windows.Forms.ToolStripButton addBreedingsButton;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStripButton createBatchButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn breedingTypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn batchColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn breedingTypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isRareColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ordering;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
     }
 }
 
