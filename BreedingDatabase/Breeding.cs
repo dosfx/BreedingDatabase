@@ -19,7 +19,8 @@ namespace BreedingDatabase
 
         public void CalcOrdering()
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(Id.ToString());
+            // throw on a ".0" after the number to match the google sheets hashing
+            byte[] bytes = Encoding.UTF8.GetBytes(Id.ToString() + ".0");
             bytes = Encoding.UTF8.GetBytes(Convert.ToBase64String(bytes));
             using (SHA512 sha = SHA512.Create())
             {
