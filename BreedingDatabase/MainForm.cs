@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LiteDB;
@@ -14,6 +15,8 @@ namespace BreedingDatabase
 {
     public partial class MainForm : Form
     {
+        private static readonly int[] BatchSizes = new int[] { 5, 10, 20 };
+
         private readonly ILiteDatabase database;
         private readonly ILiteCollection<Batch> batches;
         private readonly ILiteCollection<Breeding> breedings;
@@ -22,28 +25,18 @@ namespace BreedingDatabase
         {
             get
             {
-                int selectedCount = breedingGridView.SelectedRows.Count;
-
                 // simple check, are there 5 10 or 20 selected rows
-                if (!(new int[] { 5, 10, 20 }).Contains(selectedCount)) return false;
+                if (!BatchSizes.Contains(newIdsGridView.SelectedRows.Count)) return false;
 
-                // find the index of the last unbatched row
+                // find the first unselected row
                 int index = 0;
-                for (; index < breedingGridView.RowCount; index++)
+                for (; index < newIdsGridView.RowCount; index++)
                 {
-                    if (GetBreedingFromGrid(index).Batch != null)
-                    {
-                        // first batched row, go up 1
-                        index--;
-                        break;
-                    }
+                    if (!newIdsGridView.Rows[index].Selected) break;
                 }
 
-                // no unbatched rows in this case
-                if (index < 0) return false;
-
-                HashSet<int> requiredIndexes = new HashSet<int>(Enumerable.Range(index - selectedCount + 1, selectedCount));
-                return requiredIndexes.SetEquals(breedingGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => r.Index));
+                // check if index matches a batch size
+                return BatchSizes.Contains(index);
             }
         }
 
@@ -84,9 +77,10 @@ namespace BreedingDatabase
 
         private void FillGrid()
         {
-            breedingBindingSource.DataSource = Enumerable.Concat(
-                breedings.Query().Where(b => b.Batch == null).OrderByDescending(b => b.Id).ToEnumerable(),
-                breedings.Query().Where(b => b.Batch != null).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering));
+            // need to leave LiteDb's linq before the Select to ListViewItem
+            newIdsGridView.DataSource = breedings.Query().Where(b => b.Batch == null).OrderBy(b => b.Id).ToList();
+            breedingBindingSource.DataSource = 
+                breedings.Query().Where(b => b.Batch != null).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering);
         }
 
         private void AddBreedingsButton_Click(object sender, EventArgs e)
@@ -223,7 +217,7 @@ namespace BreedingDatabase
                 database.BeginTrans();
                 Batch batch = new Batch();
                 batches.Insert(batch);
-                List<Breeding> batchBreedings = breedingGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => GetBreedingFromGrid(r.Index)).ToList();
+                List<Breeding> batchBreedings = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => (Breeding)r.DataBoundItem).ToList();
                 foreach (Breeding breeding in batchBreedings)
                 {
                     // calc the hash to sort the breedings by
@@ -265,9 +259,92 @@ namespace BreedingDatabase
             FillGrid();
         }
 
-        private void BreedingGridView_SelectionChanged(object sender, EventArgs e)
+        private void NewIdsGridView_SelectionChanged(object sender, EventArgs e)
         {
             createBatchButton.Enabled = IsCreateBatchEnabled;
+        }
+
+        private void AddNewIds(IEnumerable<string> ids)
+        {
+            List<long> newIds = new List<long>();
+            foreach (string idStr in ids)
+            {
+                if (!long.TryParse(idStr, out long id)) continue;
+
+                if (breedings.Exists(b => b.Id == id)) continue;
+
+                newIds.Add(id);
+            }
+
+            if (newIds.Count == 0) return;
+
+            database.BeginTrans();
+            try
+            {
+                breedings.Insert(newIds.Select(id => new Breeding() { Id = id }));
+                database.Commit();
+                database.Checkpoint();
+            }
+            catch (Exception e)
+            {
+                database.Rollback();
+                HandleException(e);
+            }
+
+            FillGrid();
+        }
+
+        private void AddIdButton_Click(object sender, EventArgs e)
+        {
+            AddNewIds(new string[] { addIdTextBox.Text });
+            addIdTextBox.Clear();
+        }
+
+        private void AddIdTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // check for enter
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                AddNewIds(new string[] { addIdTextBox.Text });
+                addIdTextBox.Clear();
+                return;
+            }
+
+            // only allow certain keys
+            e.Handled =
+                // numbers
+                (e.KeyChar < '0' || '9' < e.KeyChar) &&
+                // ctrl + keys
+                !ModifierKeys.HasFlag(Keys.Control) &&
+                // backspace
+                e.KeyChar != (char)Keys.Back;
+        }
+
+        private void ParseNewIds(string text)
+        {
+            Regex regex = new Regex(@"<a href=""http:\/\/www[.]aywas[.]com\/breedcp\/index\/breedings/details\/\?id=(\d+)""");
+            AddNewIds(regex.Matches(text).Cast<Match>().Select(m => m.Groups[1].Value));
+        }
+
+        private void AddIdTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // if the text isn't a number then it must be a paste
+            if (!Regex.IsMatch(addIdTextBox.Text, @"^\d*$"))
+            {
+                // send the text to be parsed for ids
+                ParseNewIds(addIdTextBox.Text);
+
+                // clear the text box
+                addIdTextBox.Clear();
+            }
+        }
+
+        private void NewIdsGridView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers.HasFlag(Keys.Control) && e.KeyCode == Keys.V)
+            {
+                ParseNewIds(Clipboard.GetText());
+            }
         }
     }
 }
