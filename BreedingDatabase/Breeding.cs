@@ -16,6 +16,8 @@ namespace BreedingDatabase
         public string Ordering { get; set; }
         [BsonRef(nameof(Batch))]
         public Batch Batch { get; set; }
+        public bool IsMooze { get; set; }
+        public bool IsXaoc { get; set; }
 
         public void CalcOrdering()
         {

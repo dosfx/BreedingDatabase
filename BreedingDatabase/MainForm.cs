@@ -77,43 +77,10 @@ namespace BreedingDatabase
 
         private void FillGrid()
         {
-            // need to leave LiteDb's linq before the Select to ListViewItem
-            newIdsGridView.DataSource = breedings.Query().Where(b => b.Batch == null).OrderBy(b => b.Id).ToList();
+            newIdsGridView.DataSource = new BindingList<Breeding>(
+                breedings.Query().Where(b => b.Batch == null).OrderBy(b => b.Id).ToList());
             breedingBindingSource.DataSource = 
                 breedings.Query().Where(b => b.Batch != null).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering);
-        }
-
-        private void AddBreedingsButton_Click(object sender, EventArgs e)
-        {
-            using (AddBreedingsForm dialog = new AddBreedingsForm())
-            {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    try 
-                    {
-                        database.BeginTrans();
-                        IList<Breeding> newBreedings = dialog.Breedings;
-                        foreach (Breeding breeding in newBreedings)
-                        {
-                            // check if ID exists
-                            if (breedings.FindById(breeding.Id) == null)
-                            {
-                                breedings.Insert(breeding);
-                            }
-                        }
-
-                        database.Commit();
-                        database.Checkpoint();
-                    }
-                    catch (Exception ex)
-                    {
-                        database.Rollback();
-                        HandleException(ex);
-                    }
-
-                    FillGrid();
-                }
-            }
         }
 
         private void HandleException(Exception e)
@@ -294,49 +261,10 @@ namespace BreedingDatabase
             FillGrid();
         }
 
-        private void AddIdButton_Click(object sender, EventArgs e)
-        {
-            AddNewIds(new string[] { addIdTextBox.Text });
-            addIdTextBox.Clear();
-        }
-
-        private void AddIdTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // check for enter
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                AddNewIds(new string[] { addIdTextBox.Text });
-                addIdTextBox.Clear();
-                return;
-            }
-
-            // only allow certain keys
-            e.Handled =
-                // numbers
-                (e.KeyChar < '0' || '9' < e.KeyChar) &&
-                // ctrl + keys
-                !ModifierKeys.HasFlag(Keys.Control) &&
-                // backspace
-                e.KeyChar != (char)Keys.Back;
-        }
-
         private void ParseNewIds(string text)
         {
             Regex regex = new Regex(@"<a href=""http:\/\/www[.]aywas[.]com\/breedcp\/index\/breedings/details\/\?id=(\d+)""");
             AddNewIds(regex.Matches(text).Cast<Match>().Select(m => m.Groups[1].Value));
-        }
-
-        private void AddIdTextBox_TextChanged(object sender, EventArgs e)
-        {
-            // if the text isn't a number then it must be a paste
-            if (!Regex.IsMatch(addIdTextBox.Text, @"^\d*$"))
-            {
-                // send the text to be parsed for ids
-                ParseNewIds(addIdTextBox.Text);
-
-                // clear the text box
-                addIdTextBox.Clear();
-            }
         }
 
         private void NewIdsGridView_KeyUp(object sender, KeyEventArgs e)
@@ -345,6 +273,53 @@ namespace BreedingDatabase
             {
                 ParseNewIds(Clipboard.GetText());
             }
+        }
+
+        private void NewIdsGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            newIdsGridView[e.ColumnIndex, e.RowIndex].ReadOnly = e.RowIndex != newIdsGridView.NewRowIndex && e.ColumnIndex == newIdColumn.Index;
+        }
+
+        private void NewIdsGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            // ignore out of range
+            if (e.RowIndex < 0 || e.RowIndex >= newIdsGridView.RowCount) return;
+
+            Breeding breeding = (Breeding)newIdsGridView.Rows[e.RowIndex].DataBoundItem;
+
+            try
+            {
+                // update the breeding in the db
+                breedings.Upsert(breeding);
+                database.Checkpoint();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+            // update the grid regardless
+            FillGrid();             
+        }
+
+        private void NewIdsGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            // only want to do this for the id column
+            if (newIdsGridView.CurrentCell.ColumnIndex == newIdColumn.Index)
+            {
+                e.Control.KeyPress += EditingControl_KeyPress;
+            }
+        }
+
+        private void EditingControl_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled =
+                // numbers
+                (e.KeyChar < '0' || '9' < e.KeyChar) &&
+                // ctrl + keys
+                !ModifierKeys.HasFlag(Keys.Control) &&
+                // backspace
+                e.KeyChar != (char)Keys.Back;
         }
     }
 }
