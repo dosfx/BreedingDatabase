@@ -23,26 +23,8 @@ namespace BreedingDatabase
 
         private bool IsCreateBatchEnabled
         {
-            get
-            {
-                // simple check, are there 5 10 or 20 selected rows
-                int batchSize = newIdsGridView.SelectedRows.Count;
-                if (!BatchSizes.Contains(batchSize)) return false;
-
-                // make sure there aren't too many oozes
-                int oozeCount = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Where(r => ((Breeding)r.DataBoundItem).IsMooze).Count();
-                if (oozeCount > 0.8 * batchSize) return false;
-
-                // find the first unselected row
-                int index = 0;
-                for (; index < newIdsGridView.RowCount; index++)
-                {
-                    if (!newIdsGridView.Rows[index].Selected) break;
-                }
-
-                // check if index matches a batch size
-                return BatchSizes.Contains(index);
-            }
+            // simple check, are there 5 10 or 20 selected rows
+            get => BatchSizes.Contains(newIdsGridView.SelectedRows.Count);
         }
 
         public MainForm()
@@ -182,14 +164,40 @@ namespace BreedingDatabase
             if (!IsCreateBatchEnabled) return;
 
             // confirm with Alana
-            if (MessageBox.Show("Do you want to create a new batch with the selected breedings?", "Create Batch", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+            if (MessageBox.Show(this, "Do you want to create a new batch with the selected breedings?", "Create Batch", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+
+            // so some more validation
+            IEnumerable<Breeding> batchBreedings = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => (Breeding)r.DataBoundItem);
+            int batchSize = batchBreedings.Count();
+
+            // make sure there aren't too many oozes
+            int oozeCount = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Where(r => ((Breeding)r.DataBoundItem).IsMooze).Count();
+            if (oozeCount > 0.8 * batchSize)
+            {
+                MessageBox.Show(this, $"There are too many Mutagenic Oozes for a {batchSize} batch.", "Too much Ooze!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // find the first unselected row to see if the batch is the oldest rows
+            int index = 0;
+            for (; index < newIdsGridView.RowCount; index++)
+            {
+                if (!newIdsGridView.Rows[index].Selected) break;
+            }
+
+            // check if index matches a batch size
+            if (!BatchSizes.Contains(index) &&
+                MessageBox.Show(this, "There are older breedings not included in this batch, are you sure you want to continue?",
+                    "Double Checking", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
 
             try
             {
                 database.BeginTrans();
                 Batch batch = new Batch();
                 batches.Insert(batch);
-                IEnumerable<Breeding> batchBreedings = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => (Breeding)r.DataBoundItem);
                 foreach (Breeding breeding in batchBreedings)
                 {
                     // calc the hash to sort the breedings by
@@ -198,7 +206,6 @@ namespace BreedingDatabase
                     breeding.Batch = batch;
                 }
 
-                int batchSize = batchBreedings.Count();
                 List<Breeding> sortedBatch = new List<Breeding>(batchSize);
                 IEnumerator<Breeding> mooze = batchBreedings.Where(b => b.IsMooze).OrderBy(b => b.Ordering).GetEnumerator();
                 IEnumerator<Breeding> nonMooze = batchBreedings.Where(b => !b.IsMooze).OrderBy(b => b.Ordering).GetEnumerator();
