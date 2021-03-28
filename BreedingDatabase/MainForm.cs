@@ -26,7 +26,12 @@ namespace BreedingDatabase
             get
             {
                 // simple check, are there 5 10 or 20 selected rows
-                if (!BatchSizes.Contains(newIdsGridView.SelectedRows.Count)) return false;
+                int batchSize = newIdsGridView.SelectedRows.Count;
+                if (!BatchSizes.Contains(batchSize)) return false;
+
+                // make sure there aren't too many oozes
+                int oozeCount = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Where(r => ((Breeding)r.DataBoundItem).IsMooze).Count();
+                if (oozeCount > 0.8 * batchSize) return false;
 
                 // find the first unselected row
                 int index = 0;
@@ -184,7 +189,7 @@ namespace BreedingDatabase
                 database.BeginTrans();
                 Batch batch = new Batch();
                 batches.Insert(batch);
-                List<Breeding> batchBreedings = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => (Breeding)r.DataBoundItem).ToList();
+                IEnumerable<Breeding> batchBreedings = newIdsGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => (Breeding)r.DataBoundItem);
                 foreach (Breeding breeding in batchBreedings)
                 {
                     // calc the hash to sort the breedings by
@@ -193,25 +198,41 @@ namespace BreedingDatabase
                     breeding.Batch = batch;
                 }
 
-                // sort according to the hash
-                batchBreedings.Sort((a, b) => a.Ordering.CompareTo(b.Ordering));
+                int batchSize = batchBreedings.Count();
+                List<Breeding> sortedBatch = new List<Breeding>(batchSize);
+                IEnumerator<Breeding> mooze = batchBreedings.Where(b => b.IsMooze).OrderBy(b => b.Ordering).GetEnumerator();
+                IEnumerator<Breeding> nonMooze = batchBreedings.Where(b => !b.IsMooze).OrderBy(b => b.Ordering).GetEnumerator();
+                for (int i = 0; i < batchSize; i++) {
+                    if (i % 5 != 4 && mooze.MoveNext()) 
+                    {
+                        sortedBatch.Add(mooze.Current);
+                    }
+                    else if (nonMooze.MoveNext())
+                    {
+                        sortedBatch.Add(nonMooze.Current);
+                    }
+                    else
+                    {
+                        throw new Exception("Ran out of breedings while building the sorted list!");
+                    }
+                }
 
                 // every 5 is special
-                for (int i = 4; i < batchBreedings.Count; i += 5)
+                for (int i = 4; i < sortedBatch.Count; i += 5)
                 {
-                    Breeding special = batchBreedings[i];
+                    Breeding special = sortedBatch[i];
                     special.RollRare();
                     special.SetTypeFromIndex(i);
                 }
 
                 // fix the 5 batch to roll type
-                if (batchBreedings.Count == 5)
+                if (sortedBatch.Count == 5)
                 {
-                    Breeding special = batchBreedings[4];
+                    Breeding special = sortedBatch[4];
                     special.RollBreedingType();
                 }
 
-                breedings.Update(batchBreedings);
+                breedings.Update(sortedBatch);
 
                 database.Commit();
                 database.Checkpoint();
