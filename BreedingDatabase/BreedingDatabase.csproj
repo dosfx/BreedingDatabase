@@ -54,6 +54,8 @@
     <Compile Include="Batch.cs" />
     <Compile Include="Breeding.cs" />
     <Compile Include="BreedingType.cs" />
+    <Compile Include="DataGridViewIdCell.cs" />
+    <Compile Include="DataGridViewIdColumn.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

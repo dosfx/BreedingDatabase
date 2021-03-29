@@ -329,25 +329,5 @@ namespace BreedingDatabase
             // update the grid regardless
             FillGrid();             
         }
-
-        private void NewIdsGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            // only want to do this for the id column
-            if (newIdsGridView.CurrentCell.ColumnIndex == newIdColumn.Index)
-            {
-                e.Control.KeyPress += EditingControl_KeyPress;
-            }
-        }
-
-        private void EditingControl_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled =
-                // numbers
-                (e.KeyChar < '0' || '9' < e.KeyChar) &&
-                // ctrl + keys
-                !ModifierKeys.HasFlag(Keys.Control) &&
-                // backspace
-                e.KeyChar != (char)Keys.Back;
-        }
     }
 }

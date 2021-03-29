@@ -16,30 +16,30 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.breedingGridView = new System.Windows.Forms.DataGridView();
-            this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.breedingTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ordering = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.createBatchButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.newIdsGridView = new System.Windows.Forms.DataGridView();
-            this.newIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.newIsMoozeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.newIsXaocColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.breedingTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.newIdColumn = new BreedingDatabase.DataGridViewIdColumn();
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.newIdsGridView)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // breedingGridView
@@ -67,36 +67,6 @@
             this.breedingGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BreedingGridView_CellFormatting);
             this.breedingGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BreedingGridView_CellPainting);
             // 
-            // batchColumn
-            // 
-            this.batchColumn.DataPropertyName = "Batch";
-            this.batchColumn.HeaderText = "Batch";
-            this.batchColumn.Name = "batchColumn";
-            this.batchColumn.ReadOnly = true;
-            // 
-            // breedingTypeColumn
-            // 
-            this.breedingTypeColumn.DataPropertyName = "BreedingType";
-            this.breedingTypeColumn.HeaderText = "Type";
-            this.breedingTypeColumn.Name = "breedingTypeColumn";
-            this.breedingTypeColumn.ReadOnly = true;
-            // 
-            // idColumn
-            // 
-            this.idColumn.DataPropertyName = "Id";
-            this.idColumn.HeaderText = "ID";
-            this.idColumn.Name = "idColumn";
-            this.idColumn.ReadOnly = true;
-            // 
-            // isRareColumn
-            // 
-            this.isRareColumn.DataPropertyName = "IsRare";
-            this.isRareColumn.HeaderText = "Rare?";
-            this.isRareColumn.Name = "isRareColumn";
-            this.isRareColumn.ReadOnly = true;
-            this.isRareColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isRareColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
             // Ordering
             // 
             this.Ordering.DataPropertyName = "Ordering";
@@ -104,10 +74,6 @@
             this.Ordering.Name = "Ordering";
             this.Ordering.ReadOnly = true;
             this.Ordering.Visible = false;
-            // 
-            // breedingBindingSource
-            // 
-            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
             // 
             // toolStrip
             // 
@@ -154,14 +120,14 @@
             this.newIdsGridView.AllowUserToResizeRows = false;
             this.newIdsGridView.AutoGenerateColumns = false;
             this.newIdsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.newIdsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.newIdsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.newIdsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.newIdsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.newIdColumn,
@@ -178,16 +144,8 @@
             this.newIdsGridView.TabIndex = 4;
             this.newIdsGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.NewIdsGridView_CellEnter);
             this.newIdsGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.NewIdsGridView_CellValueChanged);
-            this.newIdsGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.NewIdsGridView_EditingControlShowing);
             this.newIdsGridView.SelectionChanged += new System.EventHandler(this.NewIdsGridView_SelectionChanged);
             this.newIdsGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NewIdsGridView_KeyUp);
-            // 
-            // newIdColumn
-            // 
-            this.newIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.newIdColumn.DataPropertyName = "Id";
-            this.newIdColumn.HeaderText = "ID";
-            this.newIdColumn.Name = "newIdColumn";
             // 
             // newIsMoozeColumn
             // 
@@ -226,6 +184,47 @@
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
+            // batchColumn
+            // 
+            this.batchColumn.DataPropertyName = "Batch";
+            this.batchColumn.HeaderText = "Batch";
+            this.batchColumn.Name = "batchColumn";
+            this.batchColumn.ReadOnly = true;
+            // 
+            // breedingTypeColumn
+            // 
+            this.breedingTypeColumn.DataPropertyName = "BreedingType";
+            this.breedingTypeColumn.HeaderText = "Type";
+            this.breedingTypeColumn.Name = "breedingTypeColumn";
+            this.breedingTypeColumn.ReadOnly = true;
+            // 
+            // idColumn
+            // 
+            this.idColumn.DataPropertyName = "Id";
+            this.idColumn.HeaderText = "ID";
+            this.idColumn.Name = "idColumn";
+            this.idColumn.ReadOnly = true;
+            // 
+            // isRareColumn
+            // 
+            this.isRareColumn.DataPropertyName = "IsRare";
+            this.isRareColumn.HeaderText = "Rare?";
+            this.isRareColumn.Name = "isRareColumn";
+            this.isRareColumn.ReadOnly = true;
+            this.isRareColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.isRareColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // breedingBindingSource
+            // 
+            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
+            // 
+            // newIdColumn
+            // 
+            this.newIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.newIdColumn.DataPropertyName = "Id";
+            this.newIdColumn.HeaderText = "ID";
+            this.newIdColumn.Name = "newIdColumn";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -238,10 +237,10 @@
             this.Name = "MainForm";
             this.Text = "Breeding Database";
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.newIdsGridView)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,7 +263,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Ordering;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridView newIdsGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn newIdColumn;
+        private BreedingDatabase.DataGridViewIdColumn newIdColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn newIsMoozeColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn newIsXaocColumn;
     }
