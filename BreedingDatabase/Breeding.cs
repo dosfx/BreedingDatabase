@@ -18,6 +18,7 @@ namespace BreedingDatabase
         public Batch Batch { get; set; }
         public bool IsMooze { get; set; }
         public bool IsXaoc { get; set; }
+        public bool RolledXoac { get; set; }
 
         public void CalcOrdering()
         {
@@ -48,6 +49,14 @@ namespace BreedingDatabase
             BreedingType = Chance(RollIndex.Type, 2) ? BreedingType.Hybrid : BreedingType.CommonUncommon;
         }
 
+        public void RollXoac()
+        {
+            if (IsXaoc)
+            {
+                RolledXoac = Chance(RollIndex.Xoac, 100);
+            }
+        }
+
         public void SetTypeFromIndex(int index)
         {
             BreedingType = index % 10 == 4 ? BreedingType.Hybrid : BreedingType.CommonUncommon;
@@ -56,7 +65,8 @@ namespace BreedingDatabase
         private enum RollIndex : int
         {
             Rare = 0,
-            Type = 1
+            Type = 1,
+            Xoac = 2
         }
 
         private bool Chance(RollIndex index, int odds)

@@ -120,6 +120,18 @@ namespace BreedingDatabase
                     e.Value = breeding.IsRare ? "yes" : "no";
                 }
             }
+            else if (e.ColumnIndex == rolledXoacColumn.Index)
+            {
+                if (breeding.BreedingType == BreedingType.Mutant || breeding.BreedingType == BreedingType.Unrolled)
+                {
+                    e.Value = string.Empty;
+                }
+                else
+                {
+                    e.CellStyle.BackColor = ColorTranslator.FromHtml(breeding.RolledXoac ? "#b7e1cd" : "#f7c7c3");
+                    e.Value = breeding.RolledXoac ? "yes" : "no";
+                }
+            }
             else if (e.ColumnIndex == batchColumn.Index)
             {
                 if (breeding.Batch == null)
@@ -204,6 +216,7 @@ namespace BreedingDatabase
                     breeding.CalcOrdering();
                     breeding.BreedingType = BreedingType.Mutant;
                     breeding.Batch = batch;
+                    breeding.RollXoac();
                 }
 
                 List<Breeding> sortedBatch = new List<Breeding>(batchSize);
