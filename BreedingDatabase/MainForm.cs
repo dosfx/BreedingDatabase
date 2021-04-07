@@ -342,5 +342,43 @@ namespace BreedingDatabase
             // update the grid regardless
             FillGrid();             
         }
+
+        private void NewUserPredictionsButton_Click(object sender, EventArgs e)
+        {
+            using (UserPredictionsForm dialog = new UserPredictionsForm())
+            {
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+
+                try
+                {
+                    database.BeginTrans();
+
+                    foreach (Breeding breeding in dialog.Breedings)
+                    {
+                        // just skipping duplicte IDs
+                        if (breedings.Exists(b => b.Id == breeding.Id)) continue;
+
+                        // user predictions each have a unique batch
+                        breeding.Batch = new Batch();
+
+                        breeding.RollMutant();
+                        breeding.RollRare();
+                        breeding.RollXoac();
+
+                        batches.Insert(breeding.Batch);
+                        breedings.Insert(breeding);
+                    }
+
+                    database.Commit();
+                    database.Checkpoint();
+                    FillGrid();
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                    database.Rollback();
+                }
+            }
+        }
     }
 }

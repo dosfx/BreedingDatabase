@@ -39,34 +39,44 @@ namespace BreedingDatabase
             Ordering = builder.ToString();
         }
 
+        public void RollMutant()
+        {
+            // rolls mutant or not for user predictions
+            if (IsMooze || !Chance(RollIndex.Mutant, 5))
+            {
+                BreedingType = BreedingType.Mutant;
+            }
+            else
+            {
+                RollBreedingType();
+            }
+        }
+
         public void RollRare()
         {
+            if (BreedingType == BreedingType.Mutant) return;
             IsRare = Chance(RollIndex.Rare, 4);
         }
 
-        public void RollBreedingType()
-        {
-            BreedingType = Chance(RollIndex.Type, 2) ? BreedingType.Hybrid : BreedingType.CommonUncommon;
-        }
+        public void RollBreedingType() => BreedingType = Chance(RollIndex.Type, 2) ? BreedingType.Hybrid : BreedingType.CommonUncommon;
 
         public void RollXoac()
         {
+            if (BreedingType == BreedingType.Mutant) return;
             if (IsXaoc)
             {
                 RolledXoac = Chance(RollIndex.Xoac, 100);
             }
         }
 
-        public void SetTypeFromIndex(int index)
-        {
-            BreedingType = index % 10 == 4 ? BreedingType.Hybrid : BreedingType.CommonUncommon;
-        }
+        public void SetTypeFromIndex(int index) => BreedingType = index % 10 == 4 ? BreedingType.Hybrid : BreedingType.CommonUncommon;
 
         private enum RollIndex : int
         {
             Rare = 0,
             Type = 1,
-            Xoac = 2
+            Xoac = 2,
+            Mutant = 3
         }
 
         private bool Chance(RollIndex index, int odds)

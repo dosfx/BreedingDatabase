@@ -16,12 +16,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.breedingGridView = new System.Windows.Forms.DataGridView();
+            this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.breedingTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rolledXoacColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Ordering = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.newUserPredictionsButton = new System.Windows.Forms.ToolStripButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.createBatchButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.newIdsGridView = new System.Windows.Forms.DataGridView();
@@ -29,15 +35,12 @@
             this.newIsMoozeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.newIsXaocColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.breedingTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rolledXoacColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Ordering = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
+            this.toolStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.newIdsGridView)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -69,6 +72,59 @@
             this.breedingGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BreedingGridView_CellFormatting);
             this.breedingGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BreedingGridView_CellPainting);
             // 
+            // batchColumn
+            // 
+            this.batchColumn.DataPropertyName = "Batch";
+            this.batchColumn.HeaderText = "Batch";
+            this.batchColumn.Name = "batchColumn";
+            this.batchColumn.ReadOnly = true;
+            // 
+            // breedingTypeColumn
+            // 
+            this.breedingTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.breedingTypeColumn.DataPropertyName = "BreedingType";
+            this.breedingTypeColumn.HeaderText = "Type";
+            this.breedingTypeColumn.Name = "breedingTypeColumn";
+            this.breedingTypeColumn.ReadOnly = true;
+            this.breedingTypeColumn.Width = 56;
+            // 
+            // idColumn
+            // 
+            this.idColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.idColumn.DataPropertyName = "Id";
+            this.idColumn.HeaderText = "ID";
+            this.idColumn.Name = "idColumn";
+            this.idColumn.ReadOnly = true;
+            this.idColumn.Width = 43;
+            // 
+            // isRareColumn
+            // 
+            this.isRareColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.isRareColumn.DataPropertyName = "IsRare";
+            this.isRareColumn.HeaderText = "Rare?";
+            this.isRareColumn.Name = "isRareColumn";
+            this.isRareColumn.ReadOnly = true;
+            this.isRareColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.isRareColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.isRareColumn.Width = 42;
+            // 
+            // rolledXoacColumn
+            // 
+            this.rolledXoacColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.rolledXoacColumn.DataPropertyName = "RolledXoac";
+            this.rolledXoacColumn.HeaderText = "Xoac?";
+            this.rolledXoacColumn.Name = "rolledXoacColumn";
+            this.rolledXoacColumn.ReadOnly = true;
+            this.rolledXoacColumn.Width = 63;
+            // 
+            // Ordering
+            // 
+            this.Ordering.DataPropertyName = "Ordering";
+            this.Ordering.HeaderText = "Ordering";
+            this.Ordering.Name = "Ordering";
+            this.Ordering.ReadOnly = true;
+            this.Ordering.Visible = false;
+            // 
             // breedingBindingSource
             // 
             this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
@@ -76,6 +132,8 @@
             // toolStrip
             // 
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newUserPredictionsButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 3, 1, 0);
@@ -83,12 +141,12 @@
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "toolStrip1";
             // 
-            // dataGridViewTextBoxColumn1
+            // newUserPredictionsButton
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "BreedingType";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Type";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.newUserPredictionsButton.Name = "newUserPredictionsButton";
+            this.newUserPredictionsButton.Size = new System.Drawing.Size(132, 19);
+            this.newUserPredictionsButton.Text = "New User Predictions...";
+            this.newUserPredictionsButton.Click += new System.EventHandler(this.NewUserPredictionsButton_Click);
             // 
             // createBatchButton
             // 
@@ -118,14 +176,14 @@
             this.newIdsGridView.AllowUserToResizeRows = false;
             this.newIdsGridView.AutoGenerateColumns = false;
             this.newIdsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.newIdsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.newIdsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.newIdsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.newIdsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.newIdColumn,
@@ -182,65 +240,28 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Rolled and Batched";
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "BreedingType";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Type";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // dataGridViewTextBoxColumn2
             // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dataGridViewTextBoxColumn2.DataPropertyName = "BreedingType";
             this.dataGridViewTextBoxColumn2.HeaderText = "Type";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
-            // batchColumn
+            // dataGridViewTextBoxColumn3
             // 
-            this.batchColumn.DataPropertyName = "Batch";
-            this.batchColumn.HeaderText = "Batch";
-            this.batchColumn.Name = "batchColumn";
-            this.batchColumn.ReadOnly = true;
-            // 
-            // breedingTypeColumn
-            // 
-            this.breedingTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.breedingTypeColumn.DataPropertyName = "BreedingType";
-            this.breedingTypeColumn.HeaderText = "Type";
-            this.breedingTypeColumn.Name = "breedingTypeColumn";
-            this.breedingTypeColumn.ReadOnly = true;
-            this.breedingTypeColumn.Width = 56;
-            // 
-            // idColumn
-            // 
-            this.idColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.idColumn.DataPropertyName = "Id";
-            this.idColumn.HeaderText = "ID";
-            this.idColumn.Name = "idColumn";
-            this.idColumn.ReadOnly = true;
-            this.idColumn.Width = 43;
-            // 
-            // isRareColumn
-            // 
-            this.isRareColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.isRareColumn.DataPropertyName = "IsRare";
-            this.isRareColumn.HeaderText = "Rare?";
-            this.isRareColumn.Name = "isRareColumn";
-            this.isRareColumn.ReadOnly = true;
-            this.isRareColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isRareColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.isRareColumn.Width = 42;
-            // 
-            // rolledXoacColumn
-            // 
-            this.rolledXoacColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.rolledXoacColumn.DataPropertyName = "RolledXoac";
-            this.rolledXoacColumn.HeaderText = "Xoac?";
-            this.rolledXoacColumn.Name = "rolledXoacColumn";
-            this.rolledXoacColumn.ReadOnly = true;
-            this.rolledXoacColumn.Width = 63;
-            // 
-            // Ordering
-            // 
-            this.Ordering.DataPropertyName = "Ordering";
-            this.Ordering.HeaderText = "Ordering";
-            this.Ordering.Name = "Ordering";
-            this.Ordering.ReadOnly = true;
-            this.Ordering.Visible = false;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Ordering";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Ordering";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Visible = false;
             // 
             // MainForm
             // 
@@ -255,6 +276,8 @@
             this.Text = "Breeding Database";
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.newIdsGridView)).EndInit();
             this.groupBox2.ResumeLayout(false);
@@ -284,6 +307,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn isRareColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn rolledXoacColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ordering;
+        private System.Windows.Forms.ToolStripButton newUserPredictionsButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
     }
 }
 
