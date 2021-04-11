@@ -51,6 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Artist.cs" />
+    <Compile Include="ArtistsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ArtistsForm.Designer.cs">
+      <DependentUpon>ArtistsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Batch.cs" />
     <Compile Include="Breeding.cs" />
     <Compile Include="BreedingType.cs" />
@@ -64,6 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ArtistsForm.resx">
+      <DependentUpon>ArtistsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,6 +96,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Artist.datasource" />
     <None Include="Properties\DataSources\Breeding.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

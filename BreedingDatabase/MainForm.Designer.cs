@@ -16,7 +16,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.breedingGridView = new System.Windows.Forms.DataGridView();
             this.batchColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.breedingTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -24,9 +24,13 @@
             this.isRareColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rolledXoacColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ordering = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.artistColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.artistBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.newUserPredictionsButton = new System.Windows.Forms.ToolStripButton();
+            this.manageArtistsButton = new System.Windows.Forms.ToolStripButton();
+            this.assignDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.createBatchButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -35,10 +39,12 @@
             this.newIsMoozeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.newIsXaocColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.artistBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.toolStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -59,25 +65,29 @@
             this.idColumn,
             this.isRareColumn,
             this.rolledXoacColumn,
-            this.Ordering});
+            this.Ordering,
+            this.artistColumn});
             this.breedingGridView.DataSource = this.breedingBindingSource;
             this.breedingGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.breedingGridView.Location = new System.Drawing.Point(3, 16);
             this.breedingGridView.Name = "breedingGridView";
-            this.breedingGridView.ReadOnly = true;
             this.breedingGridView.RowHeadersVisible = false;
             this.breedingGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.breedingGridView.Size = new System.Drawing.Size(461, 391);
             this.breedingGridView.TabIndex = 0;
             this.breedingGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.BreedingGridView_CellFormatting);
             this.breedingGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BreedingGridView_CellPainting);
+            this.breedingGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.BreedingGridView_CellValueChanged);
+            this.breedingGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.BreedingGridView_EditingControlShowing);
             // 
             // batchColumn
             // 
+            this.batchColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.batchColumn.DataPropertyName = "Batch";
             this.batchColumn.HeaderText = "Batch";
             this.batchColumn.Name = "batchColumn";
             this.batchColumn.ReadOnly = true;
+            this.batchColumn.Width = 60;
             // 
             // breedingTypeColumn
             // 
@@ -125,6 +135,21 @@
             this.Ordering.ReadOnly = true;
             this.Ordering.Visible = false;
             // 
+            // artistColumn
+            // 
+            this.artistColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.artistColumn.DataPropertyName = "ArtistId";
+            this.artistColumn.DataSource = this.artistBindingSource;
+            this.artistColumn.DisplayMember = "Name";
+            this.artistColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.artistColumn.HeaderText = "Artist";
+            this.artistColumn.Name = "artistColumn";
+            this.artistColumn.ValueMember = "Id";
+            // 
+            // artistBindingSource
+            // 
+            this.artistBindingSource.DataSource = typeof(BreedingDatabase.Artist);
+            // 
             // breedingBindingSource
             // 
             this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
@@ -133,7 +158,9 @@
             // 
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newUserPredictionsButton});
+            this.newUserPredictionsButton,
+            this.manageArtistsButton,
+            this.assignDropDownButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 3, 1, 0);
@@ -147,6 +174,22 @@
             this.newUserPredictionsButton.Size = new System.Drawing.Size(132, 19);
             this.newUserPredictionsButton.Text = "New User Predictions...";
             this.newUserPredictionsButton.Click += new System.EventHandler(this.NewUserPredictionsButton_Click);
+            // 
+            // manageArtistsButton
+            // 
+            this.manageArtistsButton.Name = "manageArtistsButton";
+            this.manageArtistsButton.Size = new System.Drawing.Size(99, 19);
+            this.manageArtistsButton.Text = "Manage Artists...";
+            this.manageArtistsButton.Click += new System.EventHandler(this.ManageArtistsButton_Click);
+            // 
+            // assignDropDownButton
+            // 
+            this.assignDropDownButton.Name = "assignDropDownButton";
+            this.assignDropDownButton.ShowDropDownArrow = false;
+            this.assignDropDownButton.Size = new System.Drawing.Size(171, 19);
+            this.assignDropDownButton.Text = "Assign Selected Breedings to...";
+            this.assignDropDownButton.DropDownOpening += new System.EventHandler(this.AssignDropDownButton_DropDownOpening);
+            this.assignDropDownButton.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.AssignDropDownButton_DropDownItemClicked);
             // 
             // createBatchButton
             // 
@@ -176,14 +219,14 @@
             this.newIdsGridView.AllowUserToResizeRows = false;
             this.newIdsGridView.AutoGenerateColumns = false;
             this.newIdsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.newIdsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.newIdsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.newIdsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.newIdsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.newIdColumn,
@@ -240,6 +283,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Rolled and Batched";
             // 
+            // dataGridViewComboBoxColumn1
+            // 
+            this.dataGridViewComboBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewComboBoxColumn1.DataPropertyName = "Artist";
+            this.dataGridViewComboBoxColumn1.HeaderText = "Artist";
+            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
+            // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -261,6 +311,7 @@
             this.dataGridViewTextBoxColumn3.DataPropertyName = "Ordering";
             this.dataGridViewTextBoxColumn3.HeaderText = "Ordering";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Visible = false;
             // 
             // MainForm
@@ -275,6 +326,7 @@
             this.Name = "MainForm";
             this.Text = "Breeding Database";
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.artistBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
@@ -301,14 +353,19 @@
         private BreedingDatabase.DataGridViewIdColumn newIdColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn newIsMoozeColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn newIsXaocColumn;
+        private System.Windows.Forms.ToolStripButton newUserPredictionsButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.ToolStripButton manageArtistsButton;
+        private System.Windows.Forms.BindingSource artistBindingSource;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn batchColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn breedingTypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isRareColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn rolledXoacColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ordering;
-        private System.Windows.Forms.ToolStripButton newUserPredictionsButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewComboBoxColumn artistColumn;
+        private System.Windows.Forms.ToolStripDropDownButton assignDropDownButton;
     }
 }
 

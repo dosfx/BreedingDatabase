@@ -18,6 +18,7 @@ namespace BreedingDatabase
         private static readonly int[] BatchSizes = new int[] { 5, 10, 20 };
 
         private readonly ILiteDatabase database;
+        private readonly ILiteCollection<Artist> artists;
         private readonly ILiteCollection<Batch> batches;
         private readonly ILiteCollection<Breeding> breedings;
 
@@ -32,9 +33,13 @@ namespace BreedingDatabase
             InitializeComponent();
 
             database = new LiteDatabase("breeding.db");
+            artists = database.GetCollection<Artist>();
             batches = database.GetCollection<Batch>();
             breedings = database.GetCollection<Breeding>();
             //database.Execute("select $ into $file('breeding.json') from Breeding");
+
+            // make sure the User Prediction Artist exists
+            artists.Upsert(Artist.UserArtist);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -64,10 +69,12 @@ namespace BreedingDatabase
 
         private void FillGrid()
         {
+            artistBindingSource.DataSource = 
+                artists.Query().ToEnumerable();
             newIdsGridView.DataSource = new BindingList<Breeding>(
                 breedings.Query().Where(b => b.Batch == null).OrderBy(b => b.Id).ToList());
             breedingBindingSource.DataSource = 
-                breedings.Query().Where(b => b.Batch != null).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering);
+                breedings.Query().Where(b => b.Batch != null).Include(b => b.Artist).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering);
         }
 
         private void HandleException(Exception e)
@@ -143,6 +150,11 @@ namespace BreedingDatabase
                     e.Value = IsRepeatedBatchRow(e.RowIndex) ? string.Empty : breeding.Batch.BatchDate.ToString("D");
                     breedingGridView[e.ColumnIndex, e.RowIndex].ToolTipText = breeding.Batch.BatchDate.ToString("F");
                 }
+            }
+            else if (e.ColumnIndex == artistColumn.Index)
+            {
+                //e.Value = breeding.Artist?.Id;
+
             }
         }
 
@@ -364,6 +376,7 @@ namespace BreedingDatabase
                         breeding.RollMutant();
                         breeding.RollRare();
                         breeding.RollXoac();
+                        breeding.Artist = Artist.UserArtist;
 
                         batches.Insert(breeding.Batch);
                         breedings.Insert(breeding);
@@ -378,6 +391,97 @@ namespace BreedingDatabase
                     HandleException(ex);
                     database.Rollback();
                 }
+            }
+        }
+
+        private void ManageArtistsButton_Click(object sender, EventArgs e)
+        {
+            using (ArtistsForm dialog = new ArtistsForm())
+            {
+                // give it all the artists
+                dialog.Artists = artists.Query().ToList();
+
+                // check for OK
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+
+                // safely write the changes
+                database.BeginTrans();
+                try
+                {
+                    // upsert is cool
+                    artists.Upsert(dialog.Artists);
+                    database.Commit();
+                    database.Checkpoint();
+                    FillGrid();
+                } 
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                    database.Rollback();
+                }
+            }
+        }
+
+        private void BreedingGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is ComboBox control)
+            {
+                control.DataSource = artists.Query().Where(a => a.IsActive && a.Id != Artist.UserArtist.Id).ToList();
+            }
+        }
+
+        private void BreedingGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || breedingGridView.RowCount <= e.RowIndex) return;
+
+            if (e.ColumnIndex == artistColumn.Index)
+            {
+                Breeding breeding = GetBreedingFromGrid(breedingGridView.CurrentRow.Index);
+                breeding.Artist = (Artist)((ComboBox)breedingGridView.EditingControl).SelectedItem;
+
+                database.BeginTrans();
+                try
+                {
+                    breedings.Update(breeding);
+                    database.Commit();
+                    database.Checkpoint();
+                    FillGrid();
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                    database.Rollback();
+                }
+            }
+        }
+
+        private void AssignDropDownButton_DropDownOpening(object sender, EventArgs e)
+        {
+            assignDropDownButton.DropDownItems.Clear();
+            assignDropDownButton.DropDownItems.AddRange(artists.Query().Where(a => a.IsActive && a.Id != Artist.UserArtist.Id).ToEnumerable().Select(a => new ToolStripButton() { Text = a.Name, Tag = a.Id }).ToArray());
+            assignDropDownButton.DropDown.PerformLayout();
+        }
+
+        private void AssignDropDownButton_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            Artist assign = artists.FindById((Guid)e.ClickedItem.Tag);
+            IEnumerable<Breeding> selected = breedingGridView.SelectedRows.Cast<DataGridViewRow>().Select(r => (Breeding)r.DataBoundItem);
+            foreach (Breeding breeding in selected)
+            {
+                breeding.Artist = assign;
+            }
+            database.BeginTrans();
+            try
+            {
+                breedings.Update(selected);
+                database.Commit();
+                database.Checkpoint();
+                FillGrid();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                database.Rollback();
             }
         }
     }

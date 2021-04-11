@@ -19,6 +19,13 @@ namespace BreedingDatabase
         public bool IsMooze { get; set; }
         public bool IsXaoc { get; set; }
         public bool RolledXoac { get; set; }
+        public Artist Artist { get; set; }
+        [BsonIgnore]
+        public Guid? ArtistId
+        {
+            get => Artist?.Id;
+            set { }
+        }
 
         public void CalcOrdering()
         {
