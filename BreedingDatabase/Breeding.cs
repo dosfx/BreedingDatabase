@@ -19,6 +19,7 @@ namespace BreedingDatabase
         public bool IsMooze { get; set; }
         public bool IsXaoc { get; set; }
         public bool RolledXoac { get; set; }
+        [BsonRef(nameof(Artist))]
         public Artist Artist { get; set; }
         [BsonIgnore]
         public Guid? ArtistId
