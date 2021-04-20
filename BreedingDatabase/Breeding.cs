@@ -18,7 +18,7 @@ namespace BreedingDatabase
         public Batch Batch { get; set; }
         public bool IsMooze { get; set; }
         public bool IsXaoc { get; set; }
-        public bool RolledXoac { get; set; }
+        public bool RolledXaoc { get; set; }
         [BsonRef(nameof(Artist))]
         public Artist Artist { get; set; }
         [BsonIgnore]
@@ -68,12 +68,12 @@ namespace BreedingDatabase
 
         public void RollBreedingType() => BreedingType = Chance(RollIndex.Type, 2) ? BreedingType.Hybrid : BreedingType.CommonUncommon;
 
-        public void RollXoac()
+        public void RollXaoc()
         {
             if (BreedingType == BreedingType.Mutant) return;
             if (IsXaoc)
             {
-                RolledXoac = Chance(RollIndex.Xoac, 100);
+                RolledXaoc = Chance(RollIndex.Xaoc, 100);
             }
         }
 
@@ -83,7 +83,7 @@ namespace BreedingDatabase
         {
             Rare = 0,
             Type = 1,
-            Xoac = 2,
+            Xaoc = 2,
             Mutant = 3
         }
 

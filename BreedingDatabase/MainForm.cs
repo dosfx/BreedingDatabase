@@ -133,7 +133,7 @@ namespace BreedingDatabase
                     e.Value = breeding.IsRare ? "yes" : "no";
                 }
             }
-            else if (e.ColumnIndex == rolledXoacColumn.Index)
+            else if (e.ColumnIndex == rolledXaocColumn.Index)
             {
                 if (breeding.BreedingType == BreedingType.Mutant || breeding.BreedingType == BreedingType.Unrolled)
                 {
@@ -141,8 +141,8 @@ namespace BreedingDatabase
                 }
                 else
                 {
-                    e.CellStyle.BackColor = ColorTranslator.FromHtml(breeding.RolledXoac ? "#b7e1cd" : "#f7c7c3");
-                    e.Value = breeding.RolledXoac ? "yes" : "no";
+                    e.CellStyle.BackColor = ColorTranslator.FromHtml(breeding.RolledXaoc ? "#b7e1cd" : "#f7c7c3");
+                    e.Value = breeding.RolledXaoc ? "yes" : "no";
                 }
             }
             else if (e.ColumnIndex == batchColumn.Index)
@@ -234,7 +234,7 @@ namespace BreedingDatabase
                     breeding.CalcOrdering();
                     breeding.BreedingType = BreedingType.Mutant;
                     breeding.Batch = batch;
-                    breeding.RollXoac();
+                    breeding.RollXaoc();
                 }
 
                 List<Breeding> sortedBatch = new List<Breeding>(batchSize);
@@ -381,7 +381,7 @@ namespace BreedingDatabase
 
                         breeding.RollMutant();
                         breeding.RollRare();
-                        breeding.RollXoac();
+                        breeding.RollXaoc();
                         breeding.Artist = Artist.UserArtist;
 
                         batches.Insert(breeding.Batch);
