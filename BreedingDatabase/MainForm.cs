@@ -16,6 +16,7 @@ namespace BreedingDatabase
     public partial class MainForm : Form
     {
         private static readonly int[] BatchSizes = new int[] { 5, 10, 20 };
+        private const string DatabaseFile = "breeding.db";
 
         private readonly ILiteDatabase database;
         private readonly ILiteCollection<Artist> artists;
@@ -32,11 +33,13 @@ namespace BreedingDatabase
         {
             InitializeComponent();
 
-            database = new LiteDatabase("breeding.db");
+            // create the config file at startup
+            Properties.Settings.Default.Save();
+
+            database = new LiteDatabase(DatabaseFile);
             artists = database.GetCollection<Artist>();
             batches = database.GetCollection<Batch>();
             breedings = database.GetCollection<Breeding>();
-            //database.Execute("select $ into $file('breeding.json') from Breeding");
 
             // make sure the User Prediction Artist exists
             artists.Upsert(Artist.UserArtist);
@@ -65,6 +68,9 @@ namespace BreedingDatabase
             {
                 database.Dispose();
             }
+
+            string backup = Path.Combine(Environment.ExpandEnvironmentVariables(Properties.Settings.Default.BackupLocation), DatabaseFile);
+            File.Copy(DatabaseFile, backup, true);
         }
 
         private void FillGrid()
