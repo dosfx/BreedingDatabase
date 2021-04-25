@@ -80,7 +80,7 @@ namespace BreedingDatabase
             newIdsGridView.DataSource = new BindingList<Breeding>(
                 breedings.Query().Where(b => b.Batch == null).OrderBy(b => b.Id).ToList());
             breedingBindingSource.DataSource = 
-                breedings.Query().Where(b => b.Batch != null).Include(b => b.Artist).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Ordering);
+                breedings.Query().Where(b => b.Batch != null).Include(b => b.Artist).Include(b => b.Batch).ToEnumerable().OrderByDescending(b => b.Batch.BatchDate).ThenBy(b => b.Id);
         }
 
         private void HandleException(Exception e)
