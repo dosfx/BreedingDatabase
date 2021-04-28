@@ -96,7 +96,7 @@ namespace BreedingDatabase
                 index--;
             }
 
-            return random.Next(odds - 1) == 0;
+            return random.Next(odds) == 0;
         }
     }
 }
