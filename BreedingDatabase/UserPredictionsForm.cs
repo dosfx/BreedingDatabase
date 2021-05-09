@@ -29,5 +29,21 @@ namespace BreedingDatabase
 
             breedingBindingSource.DataSource = breedings;
         }
+
+        private void NewIdsGridView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers.HasFlag(Keys.Control) && e.KeyCode == Keys.V)
+            {
+                breedings.CancelNew(newIdsGridView.NewRowIndex);
+                foreach (Match match in Regex.Matches(Clipboard.GetText(), @"\d+"))
+                {
+                    if (!long.TryParse(match.Value, out long id)) continue;
+
+                    if (breedings.Any(b => b.Id == id)) continue;
+
+                    breedings.Add(new Breeding() { Id = id });
+                }
+            }
+        }
     }
 }

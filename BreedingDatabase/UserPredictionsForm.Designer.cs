@@ -34,9 +34,9 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.newIdsGridView = new System.Windows.Forms.DataGridView();
-            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.newIdColumn = new BreedingDatabase.DataGridViewIdColumn();
             this.newIsXaocColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.newIdsGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -102,10 +102,7 @@
             this.newIdsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.newIdsGridView.Size = new System.Drawing.Size(248, 393);
             this.newIdsGridView.TabIndex = 5;
-            // 
-            // breedingBindingSource
-            // 
-            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
+            this.newIdsGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NewIdsGridView_KeyUp);
             // 
             // newIdColumn
             // 
@@ -121,6 +118,10 @@
             this.newIsXaocColumn.HeaderText = "Xaoc?";
             this.newIsXaocColumn.Name = "newIsXaocColumn";
             this.newIsXaocColumn.Width = 44;
+            // 
+            // breedingBindingSource
+            // 
+            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
             // 
             // UserPredictionsForm
             // 
