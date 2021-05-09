@@ -290,47 +290,63 @@ namespace BreedingDatabase
             createBatchButton.Enabled = IsCreateBatchEnabled;
         }
 
-        private void AddNewIds(IEnumerable<string> ids)
-        {
-            List<long> newIds = new List<long>();
-            foreach (string idStr in ids)
-            {
-                if (!long.TryParse(idStr, out long id)) continue;
-
-                if (breedings.Exists(b => b.Id == id)) continue;
-
-                newIds.Add(id);
-            }
-
-            if (newIds.Count == 0) return;
-
-            database.BeginTrans();
-            try
-            {
-                breedings.Insert(newIds.Select(id => new Breeding() { Id = id }));
-                database.Commit();
-                database.Checkpoint();
-            }
-            catch (Exception e)
-            {
-                database.Rollback();
-                HandleException(e);
-            }
-
-            FillGrid();
-        }
-
-        private void ParseNewIds(string text)
-        {
-            Regex regex = new Regex(@"<a href=""http:\/\/www[.]aywas[.]com\/breedcp\/index\/breedings/details\/\?id=(\d+)""");
-            AddNewIds(regex.Matches(text).Cast<Match>().Select(m => m.Groups[1].Value));
-        }
-
         private void NewIdsGridView_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Modifiers.HasFlag(Keys.Control) && e.KeyCode == Keys.V)
             {
-                ParseNewIds(Clipboard.GetText());
+                string text = Clipboard.GetText();
+
+                List<long> newIds = new List<long>();
+                // check for big html paste
+                MatchCollection matches = Regex.Matches(text, @"<a href=""http:\/\/www[.]aywas[.]com\/breedcp\/index\/breedings/details\/\?id=(\d+)""");
+                if (matches.Count == 0)
+                {
+                    matches = Regex.Matches(text, @"(\d+)");
+                }
+                foreach (Match match in matches)
+                {
+                    if (!long.TryParse(match.Groups[1].Value, out long id)) continue;
+
+                    if (breedings.Exists(b => b.Id == id)) continue;
+
+                    newIds.Add(id);
+                }
+
+                if (newIds.Count == 0) return;
+
+                database.BeginTrans();
+                try
+                {
+                    breedings.Insert(newIds.Select(id => new Breeding() { Id = id }));
+                    database.Commit();
+                    database.Checkpoint();
+                    FillGrid();
+                }
+                catch (Exception ex)
+                {
+                    database.Rollback();
+                    HandleException(ex);
+                }
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                if (MessageBox.Show(this, "Are you sure you want to remove the selected un-batched breedings?", "Remove Breedings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                try
+                {
+                    foreach (DataGridViewRow row in newIdsGridView.SelectedRows)
+                    {
+                        breedings.Delete(((Breeding)row.DataBoundItem).Id);
+                    }
+
+                    database.Commit();
+                    database.Checkpoint();
+                    FillGrid();
+                }
+                catch (Exception ex)
+                {
+                    database.Rollback();
+                    HandleException(ex);
+                }
             }
         }
 

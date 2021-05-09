@@ -216,6 +216,7 @@
             // 
             // newIdsGridView
             // 
+            this.newIdsGridView.AllowUserToDeleteRows = false;
             this.newIdsGridView.AllowUserToResizeColumns = false;
             this.newIdsGridView.AllowUserToResizeRows = false;
             this.newIdsGridView.AutoGenerateColumns = false;
