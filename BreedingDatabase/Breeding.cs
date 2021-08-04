@@ -18,7 +18,9 @@ namespace BreedingDatabase
         public Batch Batch { get; set; }
         public bool IsMooze { get; set; }
         public bool IsXaoc { get; set; }
+        public bool IsUltraRare { get; set; }
         public bool RolledXaoc { get; set; }
+        public bool RolledUltraRare { get; set; }
         [BsonRef(nameof(Artist))]
         public Artist Artist { get; set; }
         [BsonIgnore]
@@ -77,6 +79,15 @@ namespace BreedingDatabase
             }
         }
 
+        public void RollUltraRare()
+        {
+            if (BreedingType == BreedingType.Mutant) return;
+            if (IsUltraRare)
+            {
+                RolledUltraRare = Chance(RollIndex.UltraRare, 50);
+            }
+        }
+
         public void SetTypeFromIndex(int index) => BreedingType = index % 10 == 4 ? BreedingType.Hybrid : BreedingType.CommonUncommon;
 
         private enum RollIndex : int
@@ -84,7 +95,8 @@ namespace BreedingDatabase
             Rare = 0,
             Type = 1,
             Xaoc = 2,
-            Mutant = 3
+            Mutant = 3,
+            UltraRare = 4
         }
 
         private bool Chance(RollIndex index, int odds)

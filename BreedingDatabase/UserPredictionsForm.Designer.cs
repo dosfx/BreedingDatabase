@@ -34,9 +34,10 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.newIdsGridView = new System.Windows.Forms.DataGridView();
+            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.newIdColumn = new BreedingDatabase.DataGridViewIdColumn();
             this.newIsXaocColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.breedingBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.newIsUltraRare = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.newIdsGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -93,7 +94,8 @@
             this.newIdsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.newIdsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.newIdColumn,
-            this.newIsXaocColumn});
+            this.newIsXaocColumn,
+            this.newIsUltraRare});
             this.newIdsGridView.DataSource = this.breedingBindingSource;
             this.newIdsGridView.Location = new System.Drawing.Point(12, 25);
             this.newIdsGridView.Name = "newIdsGridView";
@@ -103,6 +105,10 @@
             this.newIdsGridView.Size = new System.Drawing.Size(248, 393);
             this.newIdsGridView.TabIndex = 5;
             this.newIdsGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NewIdsGridView_KeyUp);
+            // 
+            // breedingBindingSource
+            // 
+            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
             // 
             // newIdColumn
             // 
@@ -119,9 +125,14 @@
             this.newIsXaocColumn.Name = "newIsXaocColumn";
             this.newIsXaocColumn.Width = 44;
             // 
-            // breedingBindingSource
+            // newIsUltraRare
             // 
-            this.breedingBindingSource.DataSource = typeof(BreedingDatabase.Breeding);
+            this.newIsUltraRare.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.newIsUltraRare.DataPropertyName = "IsUltraRare";
+            this.newIsUltraRare.HeaderText = "U.R.?";
+            this.newIsUltraRare.Name = "newIsUltraRare";
+            this.newIsUltraRare.ToolTipText = "Ultra Rare?";
+            this.newIsUltraRare.Width = 41;
             // 
             // UserPredictionsForm
             // 
@@ -158,5 +169,6 @@
         private System.Windows.Forms.DataGridView newIdsGridView;
         private DataGridViewIdColumn newIdColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn newIsXaocColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn newIsUltraRare;
     }
 }
