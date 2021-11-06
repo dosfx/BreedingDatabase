@@ -520,5 +520,53 @@ namespace BreedingDatabase
                 database.Rollback();
             }
         }
+
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            BreedingSearch(searchTextBox.Text);
+        }
+
+        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                BreedingSearch(searchTextBox.Text);
+            }
+        }
+
+        private void BreedingSearch(string text)
+        {
+            // just make sure the text is a possible id untill we come up with more search columns
+            if (!long.TryParse(text, out _)) return;
+
+            // grab the current first row
+            int startingIndex = breedingGridView.SelectedRows?[0].Index ?? 0;
+
+            // clear selection
+            breedingGridView.ClearSelection();
+
+            // search after the first row
+            for (int i = startingIndex + 1; i < breedingGridView.RowCount; i++)
+            {
+                if (((Breeding)breedingGridView.Rows[i].DataBoundItem).Id.ToString().Contains(text))
+                {
+                    breedingGridView.Rows[i].Selected = true;
+                    breedingGridView.FirstDisplayedScrollingRowIndex = i;
+                    return;
+                } 
+            }
+
+            // if we fall off the end of the grid, do the first part before the starting row
+            for (int i = 0; i <= startingIndex; i++)
+            {
+                if (((Breeding)breedingGridView.Rows[i].DataBoundItem).Id.ToString().Contains(text))
+                {
+                    breedingGridView.Rows[i].Selected = true;
+                    breedingGridView.FirstDisplayedScrollingRowIndex = i;
+                    return;
+                }
+            }
+        }
     }
 }
