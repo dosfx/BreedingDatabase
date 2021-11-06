@@ -526,11 +526,12 @@ namespace BreedingDatabase
             BreedingSearch(searchTextBox.Text);
         }
 
-        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
+        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
+                e.SuppressKeyPress = true;
                 BreedingSearch(searchTextBox.Text);
             }
         }
