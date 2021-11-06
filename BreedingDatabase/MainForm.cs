@@ -541,7 +541,11 @@ namespace BreedingDatabase
             if (!long.TryParse(text, out _)) return;
 
             // grab the current first row
-            int startingIndex = breedingGridView.SelectedRows?[0].Index ?? 0;
+            int startingIndex = 0;
+            if (breedingGridView.SelectedRows.Count > 0)
+            {
+                startingIndex = breedingGridView.SelectedRows[0].Index;
+            }
 
             // clear selection
             breedingGridView.ClearSelection();
