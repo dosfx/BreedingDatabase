@@ -36,6 +36,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.searchTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.searchButton = new System.Windows.Forms.ToolStripButton();
+            this.testIdButton = new System.Windows.Forms.ToolStripButton();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.createBatchButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -182,7 +183,8 @@
             this.assignDropDownButton,
             this.toolStripSeparator1,
             this.searchTextBox,
-            this.searchButton});
+            this.searchButton,
+            this.testIdButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 3, 1, 0);
@@ -220,6 +222,7 @@
             // 
             // searchTextBox
             // 
+            this.searchTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(100, 23);
             this.searchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SearchTextBox_KeyDown);
@@ -232,6 +235,15 @@
             this.searchButton.Size = new System.Drawing.Size(46, 20);
             this.searchButton.Text = "Search";
             this.searchButton.Click += new System.EventHandler(this.SearchButton_Click);
+            // 
+            // testIdButton
+            // 
+            this.testIdButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.testIdButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.testIdButton.Name = "testIdButton";
+            this.testIdButton.Size = new System.Drawing.Size(54, 20);
+            this.testIdButton.Text = "Test ID...";
+            this.testIdButton.Click += new System.EventHandler(this.TestIdButton_Click);
             // 
             // createBatchButton
             // 
@@ -425,6 +437,7 @@
         private System.Windows.Forms.ToolStripTextBox searchTextBox;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton searchButton;
+        private System.Windows.Forms.ToolStripButton testIdButton;
     }
 }
 

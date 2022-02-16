@@ -80,6 +80,9 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestIdForm.resx">
+      <DependentUpon>TestIdForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserPredictionsForm.resx">
       <DependentUpon>UserPredictionsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -88,6 +91,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="TestIdForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestIdForm.Designer.cs">
+      <DependentUpon>TestIdForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserPredictionsForm.cs">
       <SubType>Form</SubType>
     </Compile>

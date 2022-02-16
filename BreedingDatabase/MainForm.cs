@@ -573,5 +573,10 @@ namespace BreedingDatabase
                 }
             }
         }
+
+        private void TestIdButton_Click(object sender, EventArgs e)
+        {
+            new TestIdForm().ShowDialog();
+        }
     }
 }
