@@ -200,6 +200,31 @@ namespace BreedingDatabase
             }
         }
 
+        private void BreedingGridView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (MessageBox.Show(this, "Are you sure you want to remove the selected BATCHED breedings?", "Remove Breedings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                try
+                {
+                    database.BeginTrans();
+                    foreach (DataGridViewRow row in breedingGridView.SelectedRows)
+                    {
+                        breedings.Delete(((Breeding)row.DataBoundItem).Id);
+                    }
+
+                    database.Commit();
+                    database.Checkpoint();
+                    FillGrid();
+                }
+                catch (Exception ex)
+                {
+                    database.Rollback();
+                    HandleException(ex);
+                }
+            }
+        }
+
         private void CreateBatchButton_Click(object sender, EventArgs e)
         {
             // sanity check
@@ -346,6 +371,7 @@ namespace BreedingDatabase
                 if (MessageBox.Show(this, "Are you sure you want to remove the selected un-batched breedings?", "Remove Breedings", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
                 try
                 {
+                    database.BeginTrans();
                     foreach (DataGridViewRow row in newIdsGridView.SelectedRows)
                     {
                         breedings.Delete(((Breeding)row.DataBoundItem).Id);

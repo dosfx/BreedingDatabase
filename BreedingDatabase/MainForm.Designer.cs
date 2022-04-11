@@ -87,6 +87,7 @@
             this.breedingGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.BreedingGridView_CellPainting);
             this.breedingGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.BreedingGridView_CellValueChanged);
             this.breedingGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.BreedingGridView_EditingControlShowing);
+            this.breedingGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.BreedingGridView_KeyUp);
             // 
             // batchColumn
             // 
@@ -222,7 +223,6 @@
             // 
             // searchTextBox
             // 
-            this.searchTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(100, 23);
             this.searchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SearchTextBox_KeyDown);
