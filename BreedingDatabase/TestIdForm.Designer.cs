@@ -216,7 +216,7 @@ namespace BreedingDatabase
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "TestIdForm";
+            this.Text = "Test Id";
             this.ResumeLayout(false);
             this.PerformLayout();
 
