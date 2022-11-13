@@ -336,7 +336,7 @@ namespace BreedingDatabase
 
                 List<long> newIds = new List<long>();
                 // check for big html paste
-                MatchCollection matches = Regex.Matches(text, @"<a href=""http:\/\/www[.]aywas[.]com\/breedcp\/index\/breedings/details\/\?id=(\d+)""");
+                MatchCollection matches = Regex.Matches(text, @"<a href=""https?:\/\/www[.]aywas[.]com\/breedcp\/index\/breedings/details\/\?id=(\d+)""");
                 if (matches.Count == 0)
                 {
                     matches = Regex.Matches(text, @"(\d+)");
