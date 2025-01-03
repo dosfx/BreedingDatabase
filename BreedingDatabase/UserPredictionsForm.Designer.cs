@@ -123,6 +123,7 @@
             this.newIsXaocColumn.DataPropertyName = "IsXaoc";
             this.newIsXaocColumn.HeaderText = "Xaoc?";
             this.newIsXaocColumn.Name = "newIsXaocColumn";
+            this.newIsXaocColumn.Visible = false;
             this.newIsXaocColumn.Width = 44;
             // 
             // newIsUltraRare
@@ -132,6 +133,7 @@
             this.newIsUltraRare.HeaderText = "U.R.?";
             this.newIsUltraRare.Name = "newIsUltraRare";
             this.newIsUltraRare.ToolTipText = "Ultra Rare?";
+            this.newIsUltraRare.Visible = false;
             this.newIsUltraRare.Width = 41;
             // 
             // UserPredictionsForm

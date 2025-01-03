@@ -41,15 +41,15 @@
             this.createBatchButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.newIdsGridView = new System.Windows.Forms.DataGridView();
-            this.newIdColumn = new BreedingDatabase.DataGridViewIdColumn();
-            this.newIsMoozeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.newIsXaocColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.newIsUltraRareColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.newIdColumn = new BreedingDatabase.DataGridViewIdColumn();
+            this.newIsMoozeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.newIsXaocColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.newIsUltraRareColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.breedingGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.artistBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.breedingBindingSource)).BeginInit();
@@ -223,6 +223,7 @@
             // 
             // searchTextBox
             // 
+            this.searchTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(100, 23);
             this.searchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SearchTextBox_KeyDown);
@@ -302,39 +303,6 @@
             this.newIdsGridView.SelectionChanged += new System.EventHandler(this.NewIdsGridView_SelectionChanged);
             this.newIdsGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NewIdsGridView_KeyUp);
             // 
-            // newIdColumn
-            // 
-            this.newIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.newIdColumn.DataPropertyName = "Id";
-            this.newIdColumn.HeaderText = "ID";
-            this.newIdColumn.Name = "newIdColumn";
-            // 
-            // newIsMoozeColumn
-            // 
-            this.newIsMoozeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.newIsMoozeColumn.DataPropertyName = "IsMooze";
-            this.newIsMoozeColumn.HeaderText = "M.O.";
-            this.newIsMoozeColumn.Name = "newIsMoozeColumn";
-            this.newIsMoozeColumn.ToolTipText = "Mutagenic Ooze";
-            this.newIsMoozeColumn.Width = 36;
-            // 
-            // newIsXaocColumn
-            // 
-            this.newIsXaocColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.newIsXaocColumn.DataPropertyName = "IsXaoc";
-            this.newIsXaocColumn.HeaderText = "Xaoc?";
-            this.newIsXaocColumn.Name = "newIsXaocColumn";
-            this.newIsXaocColumn.Width = 44;
-            // 
-            // newIsUltraRareColumn
-            // 
-            this.newIsUltraRareColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.newIsUltraRareColumn.DataPropertyName = "IsUltraRare";
-            this.newIsUltraRareColumn.HeaderText = "U.R.?";
-            this.newIsUltraRareColumn.Name = "newIsUltraRareColumn";
-            this.newIsUltraRareColumn.ToolTipText = "Ultra Rare?";
-            this.newIsUltraRareColumn.Width = 41;
-            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -379,6 +347,41 @@
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Visible = false;
             // 
+            // newIdColumn
+            // 
+            this.newIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.newIdColumn.DataPropertyName = "Id";
+            this.newIdColumn.HeaderText = "ID";
+            this.newIdColumn.Name = "newIdColumn";
+            // 
+            // newIsMoozeColumn
+            // 
+            this.newIsMoozeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.newIsMoozeColumn.DataPropertyName = "IsMooze";
+            this.newIsMoozeColumn.HeaderText = "M.O.";
+            this.newIsMoozeColumn.Name = "newIsMoozeColumn";
+            this.newIsMoozeColumn.ToolTipText = "Mutagenic Ooze";
+            this.newIsMoozeColumn.Width = 36;
+            // 
+            // newIsXaocColumn
+            // 
+            this.newIsXaocColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.newIsXaocColumn.DataPropertyName = "IsXaoc";
+            this.newIsXaocColumn.HeaderText = "Xaoc?";
+            this.newIsXaocColumn.Name = "newIsXaocColumn";
+            this.newIsXaocColumn.Visible = false;
+            this.newIsXaocColumn.Width = 44;
+            // 
+            // newIsUltraRareColumn
+            // 
+            this.newIsUltraRareColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.newIsUltraRareColumn.DataPropertyName = "IsUltraRare";
+            this.newIsUltraRareColumn.HeaderText = "U.R.?";
+            this.newIsUltraRareColumn.Name = "newIsUltraRareColumn";
+            this.newIsUltraRareColumn.ToolTipText = "Ultra Rare?";
+            this.newIsUltraRareColumn.Visible = false;
+            this.newIsUltraRareColumn.Width = 41;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -422,10 +425,6 @@
         private System.Windows.Forms.BindingSource artistBindingSource;
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
         private System.Windows.Forms.ToolStripDropDownButton assignDropDownButton;
-        private DataGridViewIdColumn newIdColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn newIsMoozeColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn newIsXaocColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn newIsUltraRareColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn batchColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn breedingTypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
@@ -438,6 +437,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton searchButton;
         private System.Windows.Forms.ToolStripButton testIdButton;
+        private DataGridViewIdColumn newIdColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn newIsMoozeColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn newIsXaocColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn newIsUltraRareColumn;
     }
 }
 

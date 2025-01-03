@@ -17,8 +17,8 @@ namespace BreedingDatabase
         [BsonRef(nameof(Batch))]
         public Batch Batch { get; set; }
         public bool IsMooze { get; set; }
-        public bool IsXaoc { get; set; }
-        public bool IsUltraRare { get; set; }
+        public bool IsXaoc { get; set; } = true;
+        public bool IsUltraRare { get; set; } = true;
         public bool RolledXaoc { get; set; }
         public bool RolledUltraRare { get; set; }
         [BsonRef(nameof(Artist))]
