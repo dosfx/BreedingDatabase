@@ -271,7 +271,6 @@ namespace BreedingDatabase
                     breeding.CalcOrdering();
                     breeding.BreedingType = BreedingType.Mutant;
                     breeding.Batch = batch;
-                    breeding.RollXaoc();
                 }
 
                 List<Breeding> sortedBatch = new List<Breeding>(batchSize);
@@ -297,6 +296,7 @@ namespace BreedingDatabase
                 {
                     Breeding special = sortedBatch[i];
                     special.SetTypeFromIndex(i);
+                    special.RollXaoc();
                     special.RollRare();
                     special.RollUltraRare();
                 }
